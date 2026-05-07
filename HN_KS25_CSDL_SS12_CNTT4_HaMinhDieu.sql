@@ -12,7 +12,6 @@ INSERT INTO Category (CategoryID, CategoryName) VALUES
 ('C0003', 'Technology');
 
 
-
 CREATE TABLE Book (
     BookID VARCHAR(6) PRIMARY KEY,
     Title VARCHAR(100) NOT NULL,
@@ -74,6 +73,7 @@ SELECT * FROM ViewBookBasic;
 CREATE INDEX idxTitle ON Book(Title);
 
 -- 3
+-- stored procedure ( ko có tham số )
 DELIMITER //
 CREATE PROCEDURE GetScienceBooks()
 BEGIN
@@ -83,10 +83,11 @@ BEGIN
     WHERE c.CategoryName = 'Science';
 END //
 DELIMITER ;
-
+-- gọi ra bằng lệnh 
 CALL GetScienceBooks();
 
 -- 4a
+-- tạo view 
 CREATE VIEW ViewBookCountByCategory AS
 SELECT c.CategoryName, COUNT(b.BookID) AS TotalBooks
 FROM Category c
@@ -94,12 +95,14 @@ LEFT JOIN Book b ON c.CategoryID = b.CategoryID
 GROUP BY c.CategoryID, c.CategoryName;
 
 -- 4b
+-- truy vấn dữ liệu 
 SELECT CategoryName, TotalBooks
 FROM ViewBookCountByCategory
 ORDER BY TotalBooks DESC
 LIMIT 1;
 
 -- 5a
+-- stored procedure ( có tham số )
 DELIMITER //
 CREATE PROCEDURE GetMostBorrowedBook(IN varCategoryID VARCHAR(5))
 BEGIN
@@ -114,5 +117,6 @@ END //
 DELIMITER ;
 
 -- 5b
+-- gọi ra bằng lệnh 
 CALL GetMostBorrowedBook('C0001');
 
